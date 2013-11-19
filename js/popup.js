@@ -3,7 +3,25 @@ Popup = {
 	
 	settings: {
 		servers: Array(),
-		template: $('.template')
+		template: $('.template'),
+		colors: {
+			0: '#ffffff',
+			1: '#CC66FF',
+			2: '#9966ff',
+			3: '#CCCC99',
+			4: '#CD3232',
+			5: '#FFCC99',
+			6: '#FFCC00',
+			7: '#FFCCCC',
+			8: '#CC66FF',
+			9: '#FF99FF',
+			10: '#FFFFCC',
+			11: '#00CC99',
+			12: '#DFE41B',
+			13: '#4559BA',
+			14: '#4559BA',
+			15: '#4559BA'
+		}
 	},
 
 	_init: function() {
@@ -36,8 +54,11 @@ Popup = {
 
 			template = Popup.settings.template.clone().removeClass('template').addClass('server');
 
-			$('<img/>').attr({src:'levelshots/'+server.Map+'.jpg',height:50})
+			$('<img/>').attr({src:'levelshots/'+server.Map+'.jpg',height:53,width:69})
 					   .appendTo(template.find('.levelshot'));
+
+            $('<img/>').attr({src:'images/flags/'+server.CountryCode.toLowerCase()+'.png'})
+					   .appendTo(template.find('.levelshot>.flag'));
 
 
 			template.find('.map').html(server.Map);
@@ -57,6 +78,33 @@ Popup = {
 
 			template.appendTo('#servers');
 
+			template.find('.levelshot').on('click', function(e) {
+				var servern = $(this).parent().attr('server');
+				if($('.players-big[server='+servern+']').length==0)
+				{
+					var playersc = $('.players-template').clone();
+					playersc.removeClass('players-template').addClass('players-big').attr('server',servern);
+
+					$.each(server.Players, function(i3, player) {
+						name = player.Name.replace('<','&lt;').replace('>','&gt;');
+						row = playersc.find('tbody>tr:first-child').clone();
+
+						row.find('.pping').html(player.Ping);
+						row.find('.ppl').html(player.PacketLoss);
+						row.find('.pfrags').html(player.Frags)
+						   .css('background','-webkit-linear-gradient(top, '+Popup.settings.colors[player.TopColour]+' 50%, '+Popup.settings.colors[player.BottomColour]+' 50%)')
+						row.find('.pteam').html(player.Team);
+						row.find('.pname').html(name);
+
+						row.appendTo(playersc.find('tbody'));
+					})
+
+					playersc.insertAfter('.server[server='+servern+']')
+				}
+				else {
+					$('.players-big[server='+servern+']').remove();
+				}
+			});
 		}) 
 		$('.loader').css({display:'none'})
 	},
@@ -70,6 +118,10 @@ Popup = {
 		$('.refresh').on('click', function() {
 			Request.send({action:'refresh'}) 
 		})
+
+		$('a[href*=http],a[href*=mailto]').click(function() {
+			chrome.tabs.create( { url: $(this).attr('href') } );
+		});
 
 	}
 

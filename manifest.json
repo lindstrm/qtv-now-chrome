@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
 	"name": "QTV Now",
-	"version": "1",
-	"description": "View active qtv servers.",
+	"version": "1.0",
+	"description": "View active QTV servers.",
 	"background": { 
 		"scripts": ["js/jquery-2.0.3.min.js", "js/jquery.storage.js", "js/background.js"],
 		"persistent": true

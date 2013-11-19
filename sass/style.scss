@@ -2,11 +2,12 @@
 @import "scroll";
 
 $bgc: #4c473a;
+$fc: #fff;
 
 body {
 	width: 400px;
-	height: 470px;
-	color: #fff;
+	height: 505px;
+	color: $fc;
 	font-family:Verdana,Helvetica,sans-serif;
 	font-size: 11px;
 	margin: 0;
@@ -136,15 +137,19 @@ a {
 
 	.levelshot {
 		float: left;
-		height: 50px;
-		width: 67px;
+		height: 53px;
+		width: 69px;
 		overflow: hidden;
 		background-image: url("levelshots/_notfound.jpg");
 		background-size: cover;
-		img {
-			border: 1px solid $bgc;
-			height: 50px;
-			width: 67px;
+		cursor: pointer;
+		position: relative;
+		border: 2px solid $bgc;
+		.flag {
+			position: absolute;
+			top: 4px;
+			left: 4px;
+			z-index: 999;
 		}
 	}
 
@@ -161,13 +166,54 @@ a {
 		height: 0;
 	}
 }
-
+.players-template {
+	display: none;
+}
+.players-big {
+	// display: none;
+	width: 100%;
+	padding: 5px 10px;
+	background-color: darken($bgc, 12%);
+	table {
+		thead {
+			tr>th {
+				border-bottom:1px solid lighten($bgc,10%);
+			}
+		}
+		margin-left:auto; 
+    	margin-right:auto;
+    	width: 100%;
+		tbody>tr>td {
+			padding: 2px;
+		}
+    	.pfrags {
+    		text-align: center;
+    		text-shadow: 1px 1px 1px #000;
+    	}
+	}
+}
+.container {
+	padding: 5px 10px;
+}
+h4 {
+	margin: 0;
+	font-size: 14px;
+	color: darken($fc,20%);
+}
 .pull-right {
 	float: right;
 }
 
 .hand {
 	cursor: pointer;
+}
+
+.left {
+	text-align: left;
+}
+
+.center {
+	text-align: center;
 }
 
 .clearfix {

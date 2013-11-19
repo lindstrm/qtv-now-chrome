@@ -16,6 +16,7 @@
 <div class="menu">
 	<a href="#/servers" id="nav-servers" class="entypo-target active"></a>
 	<a href="#/settings" id="nav-settings" class="entypo-cog non-active"></a>
+	<a href="#/info" id="nav-info" class="entypo-info non-active"></a>
 </div>
 <div class="content tse-scrollable wrapper">
 	<div id="servers" class="active tse-content">
@@ -23,11 +24,29 @@
 	</div>
 
 	<div id="settings" class="non-active">
-		<label><input type="checkbox" data-key="nquake"> Use nQuake online</label>
+		<div class="container">
+			<label><input type="checkbox" data-key="nquake"> Use nQuake online</label>
+		</div>
 	</div>
+
+	<div id="info" class="non-active">
+		<div class="container">
+			QTV Now 1.0 made by delete.
+
+			<p><h4>Contact</h4><br/>
+			You can reach me in #fnu on Quakenet or by <a href="mailto:manellermus@gmail.com?subject=QTV Now">email</a>.</p>
+
+			<p><h4>Changelog</h4></p>
+			<p>
+				<strong>1.0 - 19 Nov 13</strong><br/>
+				- Initial release.
+			</p>
+		</div>
+	</div>
+
 </div>
 <div class="template">
-<div class="levelshot"></div>
+<div class="levelshot"><div class="flag"></div></div>
 <div class="info">
 <p>Host: <span class="host"></span></p>
 <p>Players: <span class="players"></span></p>
@@ -36,6 +55,28 @@
 <a href="" class="entypo-eye watch"></a>
 <a href="" class="entypo-play play"></a>
 </div>
+</div>
+<div class="players-template">
+	<table>
+		<thead>
+			<tr>
+				<th width="25">Ping</th>
+				<th width="25">PL</th>
+				<th width="30">Frags</th>
+				<th width="30">Team</th>
+				<th class="left">Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="pping center"></td>
+				<td class="ppl center"></td>
+				<td class="pfrags center"></td>
+				<td class="pteam center"></td>
+				<td class="pname"></td>
+			</tr>
+		</tbody>
+	</table>
 </div>
 <script src="js/jquery-2.0.3.min.js"></script>
 <script src="js/jquery.storage.js"></script>
