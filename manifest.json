@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
-	"name": "Twitch Notifier",
-	"version": "1.4.5",
-	"description": "Notifies you when streams go online.",
+	"name": "QTV Now",
+	"version": "1",
+	"description": "View active qtv servers.",
 	"background": { 
 		"scripts": ["js/jquery-2.0.3.min.js", "js/jquery.storage.js", "js/background.js"],
 		"persistent": true
@@ -15,7 +15,7 @@
 		"default_icon": {
 			"19": "images/icon19.png"
 		},
-		"default_title": "twitchtv notifier",
+		"default_title": "QTV Now",
 		"default_popup": "popup.html"
 	},
 	"permissions": [

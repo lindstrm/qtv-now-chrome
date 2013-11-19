@@ -7,11 +7,41 @@
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div class="servers"></div>
-<hr>
-<a href="#0" class="refresh">refresh</a>
+<div class="top clearfix">
+	<div class="refresh pull-right hand">
+		<span class="entypo-arrows-ccw"></span>
+	</div>
+	<div class="loader pull-right"><img src="images/loader.gif" alt=""></div>
+</div>
+<div class="menu">
+	<a href="#/servers" id="nav-servers" class="entypo-target active"></a>
+	<a href="#/settings" id="nav-settings" class="entypo-cog non-active"></a>
+</div>
+<div class="content tse-scrollable wrapper">
+	<div id="servers" class="active tse-content">
+		
+	</div>
+
+	<div id="settings" class="non-active">
+		<label><input type="checkbox" data-key="nquake"> Use nQuake online</label>
+	</div>
+</div>
+<div class="template">
+<div class="levelshot"></div>
+<div class="info">
+<p>Host: <span class="host"></span></p>
+<p>Players: <span class="players"></span></p>
+<p>Map: <span class="map"></span></p>
+<p>Status: <span class="status"></span></p>
+<a href="" class="entypo-eye watch"></a>
+<a href="" class="entypo-play play"></a>
+</div>
+</div>
 <script src="js/jquery-2.0.3.min.js"></script>
 <script src="js/jquery.storage.js"></script>
+<script src="js/jquery.trackpad-scroll-emulator.min.js"></script>
+<script src="js/sammy-latest.min.js"></script>
 <script src="js/popup.js"></script>
+<script src="js/options.js"></script>
 </body>
 </html>

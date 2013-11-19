@@ -2,16 +2,26 @@ var s;
 Background = {
     settings: {
         list: "http://qtv.atrophied.co.uk/api/qtv/activeservers",
-        servers : Array()
+        servers: Array(),
+        interval: 60000
     },
 
     _init: function() {
         s = this.settings;
         this.grab();
+        this._startTimer();
+    },
+
+    _startTimer: function() {
+
+        setInterval(function() {
+            Background.grab();
+        },s.interval);
+
     },
 
     grab: function() {
-
+        Request.send({action:'showLoader'});
         $.ajax({
             headers: {
                 accept: "Application/Json"
@@ -20,6 +30,7 @@ Background = {
             success: function(data){
                 s.servers = new Array();
                 Background.parse(data);
+                Request.send({action:'refreshView'});
             }
         })
     },
@@ -34,7 +45,18 @@ Background = {
             }
         });
         $.localStorage('servers', s.servers);
+
+        if (s.servers.length>0) {
+            Background.setBadge({text: ""+s.servers.length+""});
+        } else {
+            Background.setBadge({text: ""});
+        }
+
         return true;
+    },
+
+    setBadge: function(opt) {
+        chrome.browserAction.setBadgeText(opt);
     }
 }
 
