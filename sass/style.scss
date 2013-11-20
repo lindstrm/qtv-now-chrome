@@ -6,7 +6,7 @@ $fc: #fff;
 
 body {
 	width: 400px;
-	height: 505px;
+	height: 490px;
 	color: $fc;
 	font-family:Verdana,Helvetica,sans-serif;
 	font-size: 11px;
@@ -49,7 +49,7 @@ a {
 }
 .menu {
 	width: 39px;
-	height: 100%;
+	height: 455px;
 	background-color: #1F1D18;
 	position: fixed;
 	left: 0;
@@ -80,7 +80,7 @@ a {
 .content {
 	border-radius: 2px;
 	width: 400px;
-	height: 470px;
+	height: 455px;
 	overflow: auto;
 	padding: 0 0px 0 39px;
 	float: left;
@@ -105,10 +105,6 @@ a {
 
 	&:nth-child(even) {
 		background-color: lighten($bgc,5%);
-	}
-
-	&:first-child {
-		margin-top: 0px;
 	}
 
 	p {
@@ -174,6 +170,15 @@ a {
 	width: 100%;
 	padding: 5px 10px;
 	background-color: darken($bgc, 12%);
+	position: relative;
+	.score {
+		margin: 0 auto;
+		padding: 5px;
+		background-color: darken($bgc, 15%);
+		display: none;
+		text-align: center;
+	}
+
 	table {
 		thead {
 			tr>th {

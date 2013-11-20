@@ -19,28 +19,30 @@
 	<a href="#/info" id="nav-info" class="entypo-info non-active"></a>
 </div>
 <div class="content tse-scrollable wrapper">
-	<div id="servers" class="active tse-content">
-		
-	</div>
+	<div id="servers" class="active tse-content"></div>
 
 	<div id="settings" class="non-active">
 		<div class="container">
-			<label><input type="checkbox" data-key="nquake"> Use nQuake online</label>
+			<p><label><input type="checkbox" data-key="nquake"> Use nQuake online.</label></p>
+			<p><label><input type="checkbox" data-key="copyLink"> Copy to clipboard instead of launching.</label></p>
 		</div>
 	</div>
 
 	<div id="info" class="non-active">
 		<div class="container">
-			QTV Now 1.0 made by delete.
+			QTV Now 1.1.0 made by delete.
 
 			<p><h4>Contact</h4><br/>
 			You can reach me in #fnu on Quakenet or by <a href="mailto:manellermus@gmail.com?subject=QTV Now">email</a>.</p>
 
 			<p><h4>Changelog</h4></p>
-			<p>
-				<strong>1.0 - 19 Nov 13</strong><br/>
-				- Initial release.
-			</p>
+			<p><strong>1.1.0 - 20 Nov 13</strong><br/>
+				- Added the option to copy the watch and play path instead of launching qw.</p>
+			<p><strong>1.0.2 - 19 Nov 13</strong><br/>
+				- Removed display of undefined teams.<br/>
+				- Fixed a bug that was causing the qtv files to be downloaded twice.</p>
+			<p><strong>1.0 - 19 Nov 13</strong><br/>
+				- Initial release.</p>
 		</div>
 	</div>
 
@@ -57,6 +59,7 @@
 </div>
 </div>
 <div class="players-template">
+	<div class="score"></div>
 	<table>
 		<thead>
 			<tr>
