@@ -34,12 +34,6 @@ a {
 	[class*="entypo-"] {
 		font-size: 20px;
 	}
-	.refresh {
-		-webkit-animation-name:             rotate; 
-	    -webkit-animation-duration:         2s; 
-	    -webkit-animation-iteration-count:  infinite;
-	    -webkit-animation-timing-function:  linear;
-	}
 
 	.loader {
 		display: none;
@@ -84,16 +78,13 @@ a {
 	overflow: auto;
 	padding: 0 0px 0 39px;
 	float: left;
-	// #servers, #settings {
-	// 	display: none;
-	// }
 	.non-active {
 		display: none;
 	}
 	overflow: hidden;
 }
 
-.server {
+.server, .stream {
 
 	// margin-top: 5px;
 
@@ -131,7 +122,7 @@ a {
 		top: 25px;
 	}
 
-	.levelshot {
+	.levelshot,.preview {
 		float: left;
 		height: 53px;
 		width: 69px;
@@ -146,6 +137,10 @@ a {
 			top: 4px;
 			left: 4px;
 			z-index: 999;
+		}
+		.stream-preview {
+			width: inherit;
+			height: inherit;
 		}
 	}
 
@@ -162,7 +157,16 @@ a {
 		height: 0;
 	}
 }
-.players-template {
+
+.stream {
+	display: block;
+	color: $fc;
+	&:hover {
+		color: $fc;
+	}
+}
+
+.players-template,.stream-template {
 	display: none;
 }
 .players-big {

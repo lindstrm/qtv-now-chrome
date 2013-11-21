@@ -3,7 +3,10 @@ Background = {
     settings: {
         list: "http://qtv.atrophied.co.uk/api/qtv/activeservers",
         servers: Array(),
-        interval: 60000
+        interval: 60000,
+        twitchUrl: 'https://api.twitch.tv/kraken/',
+        streams: [],
+        game: 'APB Reloaded'
     },
 
     _init: function() {
@@ -22,6 +25,7 @@ Background = {
 
     grab: function() {
         Request.send({action:'showLoader'});
+        Background.getStreams();
         $.ajax({
             headers: {
                 accept: "Application/Json"
@@ -35,6 +39,24 @@ Background = {
         })
     },
 
+    getStreams: function() {
+        var streams = []
+        $.getJSON(s.twitchUrl+'streams?game='+s.game, function(data){
+            $.each(data.streams,function(i,stream){
+                stream = {
+                    name: stream.channel.name,
+                    display_name: stream.channel.display_name,
+                    status: stream.channel.status || 'none',
+                    viewers: stream.viewers,
+                    game: stream.game || 'unknown',
+                    preview: stream.preview.small
+                };
+                streams.push(stream);
+            });
+            $.localStorage('streams',streams);
+        });
+    },
+
     parse: function(data) {
         $.each(data, function(i, qtvs) {
             if(qtvs.GameStates.length>0) {
@@ -44,6 +66,7 @@ Background = {
                 })
             }
         });
+                
         $.localStorage('servers', s.servers);
 
         if (s.servers.length>0) {

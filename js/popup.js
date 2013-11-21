@@ -28,6 +28,7 @@ Popup = {
 
 		s = this.settings;
 		this.refreshServerList();
+		this.refreshStreamList();
 		this.binds();
 
 	},
@@ -143,8 +144,30 @@ Popup = {
 		$('.loader').css({display:'none'})
 	},
 
-	info: function(server) {
+	refreshStreamList: function() {
+		$('#streams').html('');
+		var streams = $.localStorage('streams');
 
+		$.each(streams, function(i, stream) {
+			var template = $('.stream-template').clone().removeClass('stream-template').addClass('stream');
+
+			template.find('.status').html(function(){
+				if(stream.status.length>45) {
+					status = stream.status.substr(0,42) + "...";
+					return status;
+				} else {
+					return stream.status;
+				}
+			});
+			template.find('.streamer').html(stream.display_name);
+			template.find('.viewers').html(stream.viewers);
+			template.find('.preview').attr('data-image',stream.preview).css({width: 70, height:44});
+
+			template.attr('href','http://twitch.tv/'+stream.name);
+
+			template.appendTo('#streams');
+
+		})
 	},
 
 	binds: function() {
@@ -153,10 +176,25 @@ Popup = {
 			Request.send({action:'refresh'}) 
 		})
 
-		$('a[href*=mailto]').click(function() {
+		$('a[href*=http], a[href*=mailto]').not('.watch .play').click(function() {
 			chrome.tabs.create( { url: $(this).attr('href') } );
 		});
 
+		$('#streams').mouseenter(function(){
+			Popup.loadImages();
+		})
+
+	},
+
+	loadImages: function() {
+		console.log('load');
+		var images = $('.preview');
+		$.each(images, function(i, image) {
+			var img = $('<img/>').attr('src',$(this).attr('data-image')).addClass('.stream-preview');
+			if ($(this).find('img').length == 0) {
+				$(this).append(img);
+			}
+		})
 	}
 
 }
@@ -165,7 +203,7 @@ var Request =  {
     _init: function() {
         chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
              if(request.action == 'refreshView') {
-             	setTimeout(function(){Popup.refreshServerList()},1000);
+             	setTimeout(function(){Popup.refreshServerList();Popup.refreshStreamList()},1000);
              }
              if(request.action == 'showLoader') {
              	$('.loader').css({display:'block'})

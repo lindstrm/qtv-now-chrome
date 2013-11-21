@@ -20,6 +20,8 @@
 	},
 	"permissions": [
 		"*://qtv.atrophied.co.uk/*",
+		"*://*.twitch.tv/*",
+		"*://static-cdn.jtvnw.net/*",
 		"tabs",
 		"notifications"
 	]
