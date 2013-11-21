@@ -134,14 +134,18 @@ Popup = {
 						row.appendTo(playersc.find('tbody'));
 					})
 
-					playersc.insertAfter('.server[server='+servern+']')
+					playersc.insertAfter('.server[server='+servern+']');
+					$('#servers').css({height:$('#servers').height()+playersc.height()})
 				}
 				else {
+					$('#servers').css({height:$('#servers').height()-$('.players-big[server='+servern+']').height()})
 					$('.players-big[server='+servern+']').remove();
 				}
+				$('.wrapper').TrackpadScrollEmulator('recalculate');
 			});
 		}) 
-		$('.loader').css({display:'none'})
+		$('.loader').css({display:'none'});
+		$('#servers').css({height:s.servers.length*65});
 	},
 
 	refreshStreamList: function() {
@@ -152,8 +156,8 @@ Popup = {
 			var template = $('.stream-template').clone().removeClass('stream-template').addClass('stream');
 
 			template.find('.status').html(function(){
-				if(stream.status.length>45) {
-					status = stream.status.substr(0,42) + "...";
+				if(stream.status.length>35) {
+					status = stream.status.substr(0,32) + "...";
 					return status;
 				} else {
 					return stream.status;
@@ -161,6 +165,7 @@ Popup = {
 			});
 			template.find('.streamer').html(stream.display_name);
 			template.find('.viewers').html(stream.viewers);
+			$('<img>',{src:stream.preview,class:'stream-preview'}).appendTo(template.find('.preview'));
 			template.find('.preview').attr('data-image',stream.preview).css({width: 70, height:44});
 
 			template.attr('href','http://twitch.tv/'+stream.name);
@@ -168,6 +173,15 @@ Popup = {
 			template.appendTo('#streams');
 
 		})
+		if(streams.length>0)
+		{
+			$('.badge').html(streams.length).removeClass('non-active');
+		}
+		else if(streams.length==0) 
+		{
+			$('.badge').html('').addClass('non-active');
+		}
+		$('#streams').css({height:streams.length*56});
 	},
 
 	binds: function() {
@@ -176,26 +190,11 @@ Popup = {
 			Request.send({action:'refresh'}) 
 		})
 
-		$('a[href*=http], a[href*=mailto]').not('.watch .play').click(function() {
+		$('a[href*=http], a[href*=mailto]').not('.watch, .play').click(function() {
 			chrome.tabs.create( { url: $(this).attr('href') } );
 		});
 
-		$('#streams').mouseenter(function(){
-			Popup.loadImages();
-		})
-
 	},
-
-	loadImages: function() {
-		console.log('load');
-		var images = $('.preview');
-		$.each(images, function(i, image) {
-			var img = $('<img/>').attr('src',$(this).attr('data-image')).addClass('.stream-preview');
-			if ($(this).find('img').length == 0) {
-				$(this).append(img);
-			}
-		})
-	}
 
 }
 
@@ -241,10 +240,12 @@ $(document).ready(function() {
 			if ($('#' + this.params['page']).length)
 			{
 				page = this.params['page'];
-				$('.active').removeClass('active tse-content').addClass('non-active');
+				$('.active').not('[id*=nav-]').removeClass('active').addClass('non-active').appendTo('.content');
+				$('.active[id*=nav]').removeClass('active');
 				$('#nav-' + page).addClass('active');
-				$('#' + page).removeClass('non-active').addClass('active tse-content').appendTo('.tse-scroll-content');
-
+				$('#' + page).removeClass('non-active').addClass('active').appendTo('.tse-content');
+				$('#'+page).css({height:$('#'+page).height()});
+				$('.wrapper').TrackpadScrollEmulator('recalculate');
 			}
 		});
 	}).run('#/servers');

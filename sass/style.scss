@@ -25,7 +25,11 @@ a {
 	}
 }
 
-.template {
+#nav-streams {
+	position: relative;
+}
+
+.template,.stream-template,.players-template {
 	display: none;
 }
 .top {
@@ -78,9 +82,7 @@ a {
 	overflow: auto;
 	padding: 0 0px 0 39px;
 	float: left;
-	.non-active {
-		display: none;
-	}
+	
 	overflow: hidden;
 }
 
@@ -166,9 +168,6 @@ a {
 	}
 }
 
-.players-template,.stream-template {
-	display: none;
-}
 .players-big {
 	// display: none;
 	width: 100%;
@@ -213,6 +212,20 @@ h4 {
 	float: right;
 }
 
+.badge {
+  padding: 1px 9px 2px;
+  font-size: 8px;
+  font-weight: bold;
+  white-space: nowrap;
+  color: #ffffff;
+  background-color: #b94a48;
+  border-radius: 9px;
+	position: absolute;
+	top: -1px;
+	right: -1px;
+	padding: 3px;
+}
+
 .hand {
 	cursor: pointer;
 }
@@ -220,7 +233,6 @@ h4 {
 .left {
 	text-align: left;
 }
-
 .center {
 	text-align: center;
 }
@@ -233,4 +245,8 @@ h4 {
 		visibility: hidden;
 		height: 0;
 	}
+}
+
+.non-active {
+	display: none;
 }

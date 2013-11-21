@@ -6,7 +6,7 @@ Background = {
         interval: 60000,
         twitchUrl: 'https://api.twitch.tv/kraken/',
         streams: [],
-        game: 'APB Reloaded'
+        game: 'Quake'
     },
 
     _init: function() {
