@@ -47,105 +47,109 @@ Popup = {
 		
 		$.each(s.servers, function(i, server) {
 
-			var qtv = server.Link.split("/"),
-				num = qtv[3].split("="),
-				teams,adress,$copy = $.localStorage('copyLink');
+			if($.localStorage('hide1p') == true && server.Players.length > 1 || server.Players.length > 0 && $.localStorage('hide1p') == false)
+			{
+				var qtv = server.Link.split("/"),
+					num = qtv[3].split("="),
+					teams,adress,$copy = $.localStorage('copyLink');
 
-			qtv = {host:qtv[2],num:num[1]};
-			adress = server.Hostname+':'+server.Port;
+				qtv = {host:qtv[2],num:num[1]};
+				adress = server.Hostname+':'+server.Port;
 
-			if(server.Teams.length == 2) {
-				teams = (server.Teams[0].Name||'???') + ' vs '+ (server.Teams[1].Name||'???')
-			}
-
-			watch = $.localStorage('nquake') == true ? 'http://nquake.com/online/qtv/'+qtv.num+'@'+qtv.host:'http://dafaq.se/qtv.php?q='+server.Link;
-			play  = $.localStorage('nquake') == true ? 'http://nquake.com/online/join'+adress:'qw://'+adress;
-
-			template = Popup.settings.template.clone().removeClass('template').addClass('server');
-
-			$('<img/>').attr({src:'levelshots/'+server.Map+'.jpg',height:53,width:69})
-					   .appendTo(template.find('.levelshot'));
-
-            $('<img/>').attr({src:'images/flags/'+server.CountryCode.toLowerCase()+'.png'})
-					   .appendTo(template.find('.levelshot>.flag'));
-
-			template.find('.map').html(server.Map);
-			template.find('.players').html(server.Players.length + (teams? ' | teams: ' +teams:''));
-			template.find('.host').html(adress);
-			template.find('.status').html(server.Status);
-
-			template.find('.watch').attr({href:watch,"data-clipboard-text":"Copy me!"}).click(function() {
-				console.log($copy);
-				if($.localStorage('copyLink') == true) {
-					qtv = $(this).attr('href').split("/");
-					num = qtv[qtv.length-1].split("=");
-					Popup._copy('qtvplay '+num[1]+'@'+qtv[qtv.length-2],'text');
+				if(server.Teams.length == 2) {
+					teams = (server.Teams[0].Name||'???') + ' vs '+ (server.Teams[1].Name||'???')
 				}
-				else {
-					chrome.tabs.create( { url: $(this).attr('href') } );
-				}
-			});
-			
-			template.find('.play').attr('href',play).click(function() {
-				if($.localStorage('copyLink') == true) {
-					addr = $(this).attr('href').split('/');
-					Popup._copy(addr[addr.length - 1],'text');
-				}
-				else {
-					chrome.tabs.create( { url: $(this).attr('href') } );
-				}
-			});
 
-			template.attr('server',i);
+				watch = $.localStorage('nquake') == true ? 'http://nquake.com/online/qtv/'+qtv.num+'@'+qtv.host:'http://dafaq.se/qtv.php?q='+server.Link;
+				play  = $.localStorage('nquake') == true ? 'http://nquake.com/online/join'+adress:'qw://'+adress;
 
-			template.appendTo('#servers');
+				template = Popup.settings.template.clone().removeClass('template').addClass('server');
 
-			template.find('.levelshot').on('click', function(e) {
-				var servern = $(this).parent().attr('server');
-				if($('.players-big[server='+servern+']').length==0)
-				{
-					var playersc = $('.players-template').clone();
-					playersc.removeClass('players-template').addClass('players-big').attr('server',servern);
+				$('<img/>').attr({src:'levelshots/'+server.Map+'.jpg',height:53,width:69})
+						   .appendTo(template.find('.levelshot'));
 
-					if(server.Status != 'Standby') {
-						if(server.Players.length>2)
-						{
-							score = server.Teams[0].Name.replace('<','&lt;').replace('>','&gt;') + ' ' + '<strong>' +  server.Teams[0].Score  + '</strong>  vs ' +
-									'<strong>' + server.Teams[1].Score + '</strong> ' + server.Teams[1].Name.replace('<','&lt;').replace('>','&gt;');
-						}
-						else if(server.Players.length==2) {
-							score = server.Players[0].Name.replace('<','&lt;').replace('>','&gt;') + ' ' + '<strong>' + server.Players[0].Frags +'</strong> vs ' +
-									'<strong>' + server.Players[1].Frags + '</strong> ' + server.Players[1].Name.replace('<','&lt;').replace('>','&gt;');
-						}
-						playersc.find('.score').html(score).css({display:'block'});
+	            $('<img/>').attr({src:'images/flags/'+server.CountryCode.toLowerCase()+'.png'})
+						   .appendTo(template.find('.levelshot>.flag'));
+
+				template.find('.map').html(server.Map);
+				template.find('.players').html(server.Players.length + (teams? ' | teams: ' +teams:''));
+				template.find('.host').html(adress);
+				template.find('.status').html(server.Status);
+
+				template.find('.watch').attr({href:watch,"data-clipboard-text":"Copy me!"}).click(function() {
+					console.log($copy);
+					if($.localStorage('copyLink') == true) {
+						qtv = $(this).attr('href').split("/");
+						num = qtv[qtv.length-1].split("=");
+						Popup._copy('qtvplay '+num[1]+'@'+qtv[qtv.length-2],'text');
 					}
+					else {
+						chrome.tabs.create( { url: $(this).attr('href') } );
+					}
+				});
+				
+				template.find('.play').attr('href',play).click(function() {
+					if($.localStorage('copyLink') == true) {
+						addr = $(this).attr('href').split('/');
+						Popup._copy(addr[addr.length - 1],'text');
+					}
+					else {
+						chrome.tabs.create( { url: $(this).attr('href') } );
+					}
+				});
 
-					$.each(server.Players, function(i3, player) {
-						name = player.Name.replace('<','&lt;').replace('>','&gt;');
-						row = playersc.find('tbody>tr:first-child').clone();
+				template.attr('server',i);
 
-						row.find('.pping').html(player.Ping);
-						row.find('.ppl').html(player.PacketLoss);
-						row.find('.pfrags').html(player.Frags)
-						   .css('background','-webkit-linear-gradient(top, '+Popup.settings.colors[player.TopColour]+' 50%, '+Popup.settings.colors[player.BottomColour]+' 50%)')
-						row.find('.pteam').html(player.Team);
-						row.find('.pname').html(name);
+				template.appendTo('#servers');
 
-						row.appendTo(playersc.find('tbody'));
-					})
+				template.find('.levelshot').on('click', function(e) {
+					var servern = $(this).parent().attr('server');
+					if($('.players-big[server='+servern+']').length==0)
+					{
+						var playersc = $('.players-template').clone();
+						playersc.removeClass('players-template').addClass('players-big').attr('server',servern);
 
-					playersc.insertAfter('.server[server='+servern+']');
-					$('#servers').css({height:$('#servers').height()+playersc.height()})
-				}
-				else {
-					$('#servers').css({height:$('#servers').height()-$('.players-big[server='+servern+']').height()})
-					$('.players-big[server='+servern+']').remove();
-				}
-				$('.wrapper').TrackpadScrollEmulator('recalculate');
-			});
+						if(server.Status != 'Standby') {
+							if(server.Players.length>2)
+							{
+								score = server.Teams[0].Name.replace('<','&lt;').replace('>','&gt;') + ' ' + '<strong>' +  server.Teams[0].Score  + '</strong>  vs ' +
+										'<strong>' + server.Teams[1].Score + '</strong> ' + server.Teams[1].Name.replace('<','&lt;').replace('>','&gt;');
+							}
+							else if(server.Players.length==2) {
+								score = server.Players[0].Name.replace('<','&lt;').replace('>','&gt;') + ' ' + '<strong>' + server.Players[0].Frags +'</strong> vs ' +
+										'<strong>' + server.Players[1].Frags + '</strong> ' + server.Players[1].Name.replace('<','&lt;').replace('>','&gt;');
+							}
+							playersc.find('.score').html(score).css({display:'block'});
+						}
+
+						$.each(server.Players, function(i3, player) {
+							name = player.Name.replace('<','&lt;').replace('>','&gt;');
+							row = playersc.find('tbody>tr:first-child').clone();
+
+							row.find('.pping').html(player.Ping);
+							row.find('.ppl').html(player.PacketLoss);
+							row.find('.pfrags').html(player.Frags)
+							   .css('background','-webkit-linear-gradient(top, '+Popup.settings.colors[player.TopColour]+' 50%, '+Popup.settings.colors[player.BottomColour]+' 50%)')
+							row.find('.pteam').html(player.Team);
+							row.find('.pname').html(name);
+
+							row.appendTo(playersc.find('tbody'));
+						})
+
+						playersc.insertAfter('.server[server='+servern+']');
+						$('#servers').css({height:$('#servers').height()+playersc.height()})
+					}
+					else {
+						$('#servers').css({height:$('#servers').height()-$('.players-big[server='+servern+']').height()})
+						$('.players-big[server='+servern+']').remove();
+					}
+					$('.wrapper').TrackpadScrollEmulator('recalculate');
+				});
+			}
 		}) 
+
 		$('.loader').css({display:'none'});
-		$('#servers').css({height:s.servers.length*65});
+		$('#servers').css({height:$('.server').length*65});
 	},
 
 	refreshStreamList: function() {
@@ -172,6 +176,9 @@ Popup = {
 
 			template.appendTo('#streams');
 
+			template.click(function() {
+				chrome.tabs.create( { url: $(this).attr('href') } );
+			});
 		})
 		if(streams.length>0)
 		{
@@ -190,7 +197,7 @@ Popup = {
 			Request.send({action:'refresh'}) 
 		})
 
-		$('a[href*=http], a[href*=mailto]').not('.watch, .play').click(function() {
+		$('a[href*=http], a[href*=mailto]').not('.watch, .play, .stream').click(function() {
 			chrome.tabs.create( { url: $(this).attr('href') } );
 		});
 

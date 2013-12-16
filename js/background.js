@@ -69,8 +69,19 @@ Background = {
                 
         $.localStorage('servers', s.servers);
 
-        if (s.servers.length>0) {
+        if (s.servers.length>0&&$.localStorage('hide1p')==false) {
             Background.setBadge({text: ""+s.servers.length+""});
+        } else if (s.servers.length>0&&$.localStorage('hide1p')==true) {
+            var server2ps = 0;
+            $.each(s.servers, function(i, server){
+                if(server.Players.length>1) {
+                    server2ps++;
+                }
+            })
+            if(server2ps>0)
+                Background.setBadge({text: ""+server2ps+""});
+            else
+                Background.setBadge({text: ""});
         } else {
             Background.setBadge({text: ""});
         }
@@ -122,7 +133,8 @@ var Request =  {
      send: function(msg) {
 
         chrome.runtime.sendMessage(msg, function(response) {
-            return response.data;
+            if(response !== undefined && response.data !== undefined)
+                return response.data;
         });
 
     }

@@ -41,6 +41,9 @@ var Options = {
 							Request.send({action:'refresh'});
 						}
 					}
+					else if(key=='hide1p') {
+						Request.send({action:'refresh'});
+					}
 					break;
 				}
 			}
