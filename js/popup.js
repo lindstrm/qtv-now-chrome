@@ -42,6 +42,7 @@ Popup = {
 	},
 
 	refreshServerList: function() {
+		$.sessionStorage('test',true);
 		$('#servers').html('');
 		s.servers = $.localStorage('servers');
 		
@@ -61,7 +62,7 @@ Popup = {
 				}
 
 				watch = $.localStorage('nquake') == true ? 'http://nquake.com/online/qtv/'+qtv.num+'@'+qtv.host:'http://dafaq.se/qtv.php?q='+server.Link;
-				play  = $.localStorage('nquake') == true ? 'http://nquake.com/online/join'+adress:'qw://'+adress;
+				play  = $.localStorage('nquake') == true ? 'http://nquake.com/online/join/'+adress:'qw://'+adress;
 
 				template = Popup.settings.template.clone().removeClass('template').addClass('server');
 
@@ -72,12 +73,11 @@ Popup = {
 						   .appendTo(template.find('.levelshot>.flag'));
 
 				template.find('.map').html(server.Map);
-				template.find('.players').html(server.Players.length + (teams? ' | teams: ' +teams:''));
+				template.find('.players').html(server.Players.length + (server.Observers>0?" (" + server.Observers + ")":"") + (teams? ' | teams: ' +teams:''));
 				template.find('.host').html(adress);
 				template.find('.status').html(server.Status);
 
-				template.find('.watch').attr({href:watch,"data-clipboard-text":"Copy me!"}).click(function() {
-					console.log($copy);
+				template.find('.watch').attr({href:watch}).click(function() {
 					if($.localStorage('copyLink') == true) {
 						qtv = $(this).attr('href').split("/");
 						num = qtv[qtv.length-1].split("=");
@@ -101,6 +101,9 @@ Popup = {
 				template.attr('server',i);
 
 				template.appendTo('#servers');
+
+				if(server.Observers>=$.localStorage('obsNotice')&&$.localStorage('obsNotice')>0)
+					template.addClass('highlight');
 
 				template.find('.levelshot').on('click', function(e) {
 					var servern = $(this).parent().attr('server');
@@ -191,6 +194,60 @@ Popup = {
 		$('#streams').css({height:streams.length*56});
 	},
 
+	demoSearch: function(string) {
+
+		$.get('http://qtvapi.dafaq.se/demos',{search: string},function(data) {
+			$('.demo-list').html('');
+			$.each(data, function(i, demo)
+			{
+				template = Popup.demoTemplate(demo);
+				template.appendTo('.demo-list');
+				$('#demos').css({height:(65*data.length)});
+			});
+		})		
+	},
+
+	demoTemplate: function(demo) {
+
+		var template = $('.demo-template').clone();
+		template.removeClass('demo-template');
+		template.find('.type').html(demo.type);
+		
+		if(demo.type == 'duel') {
+			preWho = 'Players: ';
+		} else {
+			preWho = 'Teams: ';
+		}
+		vs = preWho + demo.teamOne.replace('<','&lt;').replace('>','&gt;') +' vs '+ demo.teamTwo.replace('<','&lt;').replace('>','&gt;');
+		template.find('.who').html(function(){
+			if(vs.length>35) {
+				return vs.substr(0,32) + "...";;
+			} else {
+				return vs;
+			}
+		}).attr('title',demo.teamOne +' vs '+ demo.teamTwo);
+
+		$('<img/>').attr({src:'levelshots/'+demo.map+'.jpg',height:53,width:69}).appendTo(template.find('.levelshot'));
+
+		watch    = "http://dafaq.se/qtv.php?q="+demo.qtv.adress+"/watch.qtv?demo="+demo.filename;
+		download = demo.qtv.adress+"/dl/demos/"+demo.filename;
+
+		template.find('.watch').attr({href:watch}).click(function() {
+			chrome.tabs.create( { url: $(this).attr('href') } );
+		});
+		
+		template.find('.download').attr('href',download).click(function() {
+			chrome.tabs.create( { url: $(this).attr('href') } );
+		});
+
+		template.find('.date').html(demo.date_played);
+
+		template.find('.map').html(demo.map);
+		template.addClass('demo');
+
+		return template;
+	},
+
 	binds: function() {
 
 		$('.refresh').on('click', function() {
@@ -200,6 +257,10 @@ Popup = {
 		$('a[href*=http], a[href*=mailto]').not('.watch, .play, .stream').click(function() {
 			chrome.tabs.create( { url: $(this).attr('href') } );
 		});
+
+		$('#demo-search').change(function(e) {
+			Popup.demoSearch($(this).val());
+		})
 
 	},
 
@@ -247,6 +308,21 @@ $(document).ready(function() {
 			if ($('#' + this.params['page']).length)
 			{
 				page = this.params['page'];
+
+				if(page == 'demos') {
+					$('#demo-search').val('');
+					$('.demo-list').html('');
+
+					$.get('http://qtvapi.dafaq.se/demos',function(data) {
+						$.each(data, function(i, demo)
+						{
+							template = Popup.demoTemplate(demo);
+							template.appendTo('.demo-list');
+							$('#demos').css({height:1300});
+						});
+					})		
+				}
+
 				$('.active').not('[id*=nav-]').removeClass('active').addClass('non-active').appendTo('.content');
 				$('.active[id*=nav]').removeClass('active');
 				$('#nav-' + page).addClass('active');

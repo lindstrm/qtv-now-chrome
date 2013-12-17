@@ -19,6 +19,11 @@ var Options = {
 			return val;
 		})
 
+		$('input[type=text]').val(function(){
+			val = $.localStorage($(this).attr('data-key'));
+			return val;
+		})
+
 	},
 
 	setBinds: function() {
@@ -45,6 +50,10 @@ var Options = {
 						Request.send({action:'refresh'});
 					}
 					break;
+				}
+
+				default: {
+					$.localStorage($(this).attr('data-key'),$(this).val());
 				}
 			}
 

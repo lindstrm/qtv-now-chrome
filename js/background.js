@@ -6,13 +6,15 @@ Background = {
         interval: 60000,
         twitchUrl: 'https://api.twitch.tv/kraken/',
         streams: [],
-        game: 'Quake'
+        game: 'Quake',
+        obsNotice: 0
     },
 
     _init: function() {
         s = this.settings;
         this.grab();
         this._startTimer();
+        $.localStorage('obsNoticed',new Array());
     },
 
     _startTimer: function() {
@@ -24,6 +26,11 @@ Background = {
     },
 
     grab: function() {
+        if($.localStorage('obsNotice') !== undefined) {
+            s.obsNotice = $.localStorage('obsNotice');
+            s.obsNoticed = $.localStorage('obsNoticed');
+        }
+
         Request.send({action:'showLoader'});
         Background.getStreams();
         $.ajax({
@@ -58,19 +65,65 @@ Background = {
     },
 
     parse: function(data) {
+        var badge, alert = false, activeServers = new Object();
+
         $.each(data, function(i, qtvs) {
             if(qtvs.GameStates.length>0) {
                 servers = qtvs.GameStates;
                 $.each(servers, function(i2, server) {
-                    s.servers.push(server)
+                    var hostname = server.Hostname+':'+server.Port;
+                    s.servers.push(server);
+                    activeServers[hostname] = {
+                        hostname: hostname,
+                        observers: server.Observers
+                    };
+
+                    if(s.obsNotice>0&&server.Observers>=s.obsNotice&&$.inArray(server.Hostname+':'+server.Port,s.obsNoticed) == "-1") {
+
+                        Notifier.display({
+                            title: 'Observer notice on '+hostname,
+                            message: hostname+' has reached '+server.Observers+' observers.',
+                            iconUrl: '/levelshots/'+server.Map+'.jpg',
+                            server: hostname
+                        });
+                        s.obsNoticed.push(hostname);
+                    }
+
+                    if(s.obsNotice>0&&server.Observers>=s.obsNotice) {
+                        alert = true;
+                    }
                 })
             }
         });
-                
-        $.localStorage('servers', s.servers);
+    
+        $.each(s.obsNoticed, function(i, server){
+            var found = false;
+            $.each(activeServers, function(i2, asrv){
+                if(asrv.hostname == server && asrv.observers>=s.obsNotice)
+                    found = true;
+            });
+            if(found==true){
+                // console.log(server+' is still active');
+            }
+            else {
+                s.obsNoticed.splice(i);
+                Notifier.clear(server);
+            }
+        })
 
+        $.localStorage('servers', s.servers);
+        $.localStorage('obsNoticed',s.obsNoticed);
+        $.localStorage('activeServers',activeServers);
+
+        
+        Background.setBadge((function(){return Background.getBadge(alert)})());
+
+        return true;
+    },
+
+    getBadge: function(alert) {
         if (s.servers.length>0&&$.localStorage('hide1p')==false) {
-            Background.setBadge({text: ""+s.servers.length+""});
+            badge = s.servers.length;
         } else if (s.servers.length>0&&$.localStorage('hide1p')==true) {
             var server2ps = 0;
             $.each(s.servers, function(i, server){
@@ -79,14 +132,18 @@ Background = {
                 }
             })
             if(server2ps>0)
-                Background.setBadge({text: ""+server2ps+""});
+                badge = server2ps;
             else
-                Background.setBadge({text: ""});
+                badge = "";
         } else {
-            Background.setBadge({text: ""});
+            badge = "";
         }
 
-        return true;
+        if(alert==true) {
+            badge = "!"+ badge +"!";
+        }
+
+        return {text:""+badge+""};
     },
 
     setBadge: function(opt) {
@@ -99,11 +156,7 @@ var Notifier = {
         type: "basic",
         title: "",
         message: "",
-        iconUrl: "/images/Twitch-tv-logo.png",
-        buttons: [{
-            title: 'View',
-            iconUrl: ''
-        }],
+        iconUrl: "/levelshots/_notfound.jpg",
         priority: 0
     },
 
@@ -112,7 +165,7 @@ var Notifier = {
         Notifier.settings.message = msg.message;
         Notifier.settings.iconUrl = msg.iconUrl;
 
-        chrome.notifications.create(msg.stream, Notifier.settings, function(){});
+        chrome.notifications.create(msg.server, Notifier.settings, function(){});
     },
 
     clear: function(title) {

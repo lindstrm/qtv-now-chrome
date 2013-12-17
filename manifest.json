@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "QTV Now",
-	"version": "1.3.0",
+	"version": "1.4.0",
 	"description": "View active QTV servers.",
 	"background": { 
 		"scripts": ["js/jquery-2.0.3.min.js", "js/jquery.storage.js", "js/background.js"],
@@ -22,6 +22,7 @@
 		"*://qtv.atrophied.co.uk/*",
 		"*://*.twitch.tv/*",
 		"*://static-cdn.jtvnw.net/*",
+		"*://qtvapi.dafaq.se/*",
 		"tabs",
 		"notifications"
 	]
