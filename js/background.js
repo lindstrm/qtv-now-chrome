@@ -15,6 +15,23 @@ Background = {
         this.grab();
         this._startTimer();
         $.localStorage('obsNoticed',new Array());
+
+        if($.localStorage('hide1p') == undefined) {
+            $.localStorage('hide1p', false);
+        }
+
+        if($.localStorage('nquake') == undefined) {
+            $.localStorage('nquake', false);
+        }
+
+        if($.localStorage('copyLink') == undefined) {
+            $.localStorage('copyLink', false);
+        }
+
+         if($.localStorage('obsNotice') == undefined) {
+            $.localStorage('obsNotice', '0');
+        }
+
     },
 
     _startTimer: function() {
