@@ -83,7 +83,7 @@ a {
 	padding: 0 0px 0 39px;
 	float: left;
 	
-	overflow: hidden;
+	overflow-x: hidden;
 }
 
 .server, .stream, .demo {
@@ -286,4 +286,18 @@ h4 {
 
 .non-active {
 	display: none;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    opacity: 0;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: rgba(255, 255, 255, 1);
 }
