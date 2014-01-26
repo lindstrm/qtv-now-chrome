@@ -12,8 +12,7 @@ Background = {
 
     _init: function() {
         s = this.settings;
-        this.grab();
-        this._startTimer();
+       
         $.localStorage('obsNoticed',new Array());
 
         if($.localStorage('hide1p') == undefined) {
@@ -32,6 +31,8 @@ Background = {
             $.localStorage('obsNotice', '0');
         }
 
+        this.grab();
+        this._startTimer();
     },
 
     _startTimer: function() {

@@ -31,6 +31,10 @@ Popup = {
 		this.refreshStreamList();
 		this.binds();
 
+		$('body').mouseenter(function(){
+			Popup.loadImages();
+		})
+
 	},
 
 	_copy: function(str, mimetype) {
@@ -69,8 +73,9 @@ Popup = {
 				$('<img/>').attr({src:'levelshots/'+server.Map+'.jpg',height:53,width:69})
 						   .appendTo(template.find('.levelshot'));
 
-	            $('<img/>').attr({src:'images/flags/'+server.CountryCode.toLowerCase()+'.png'})
-						   .appendTo(template.find('.levelshot>.flag'));
+				if(server.CountryCode.length>1)
+		            $('<img/>').attr({src:'images/flags/'+server.CountryCode.toLowerCase()+'.png'})
+							   .appendTo(template.find('.levelshot>.flag'));
 
 				template.find('.map').html(server.Map);
 				template.find('.players').html(server.Players.length + (server.Observers>0?" (" + server.Observers + ")":"") + (teams? ' | teams: ' +teams:''));
@@ -172,9 +177,9 @@ Popup = {
 			});
 			template.find('.streamer').html(stream.display_name);
 			template.find('.viewers').html(stream.viewers);
-			$('<img>',{src:stream.preview,class:'stream-preview'}).appendTo(template.find('.preview'));
-			template.find('.preview').attr('data-image',stream.preview).css({width: 70, height:44});
 
+			template.find('.preview').attr('data-image',stream.preview).css({width: 70, height:44});
+		
 			template.attr('href','http://twitch.tv/'+stream.name);
 
 			template.appendTo('#streams');
@@ -253,6 +258,15 @@ Popup = {
 		template.addClass('demo');
 
 		return template;
+	},
+
+	loadImages: function() {
+		var images = $('.preview');
+		$.each(images, function(i, image) {
+			var img = $('<img/>').attr('src',$(this).attr('data-image'));
+			$(this).html('');
+			$(this).append(img);
+		})
 	},
 
 	binds: function() {
@@ -335,7 +349,6 @@ $(document).ready(function() {
 				$('#nav-' + page).addClass('active');
 				$('#' + page).removeClass('non-active').addClass('active').appendTo('.tse-content');
 				$('#'+page).css({height:$('#'+page).height()});
-				$('.wrapper').TrackpadScrollEmulator('recalculate');
 			}
 		});
 	}).run('#/servers');
@@ -343,7 +356,6 @@ $(document).ready(function() {
 
 Popup._init();
 Request._init();
-// $('.wrapper').TrackpadScrollEmulator();
 
 // Simulates PHP's date function
 Date.prototype.format = function(format) {
