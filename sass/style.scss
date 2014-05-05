@@ -35,7 +35,7 @@ a {
 .top {
 	padding: 5px;
 	background-color: #1F1D18;
-	[class*="entypo-"], [class*="fontawesome-"] {
+	[class*="eicon-"] {
 		font-size: 20px;
 	}
 
@@ -58,7 +58,7 @@ a {
 		color: #ccc;
 	}
 
-	[class*="entypo-"], [class*="fontawesome-"] {
+	[class*="eicon-"] {
 		width: 100%;
 		height: 39px;
 		display: block;
@@ -118,7 +118,7 @@ a {
 		margin: 0;
 	}
 
-	[class*="entypo-"], [class*="fontawesome-"] {
+	[class*="eicon-"] {
 		font-size: 22px;
 		color: lighten($bgc,20%);
 		&:hover {
@@ -134,7 +134,7 @@ a {
 
 	.play {
 		position: absolute;
-		right: 12px;
+		right: 16px;
 		top: 30px;
 	}
 
@@ -294,7 +294,6 @@ h4 {
 }
 
 ::-webkit-scrollbar-thumb {
-    border-radius: 4px;
     background: rgba(255, 255, 255, 0.6);
 }
 

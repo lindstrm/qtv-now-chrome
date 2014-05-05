@@ -9,16 +9,16 @@
 <body>
 <div class="top clearfix">
 	<div class="refresh pull-right hand">
-		<span class="fontawesome-retweet"></span>
+		<span class="eicon-arrows-ccw"></span>
 	</div>
 	<div class="loader pull-right"><img src="images/loader.gif" alt=""></div>
 </div>
 <div class="menu">
-	<a href="#/servers" id="nav-servers" class="fontawesome-screenshot active"></a>
-	<a href="#/streams" id="nav-streams" class="fontawesome-bolt non-active"><div class="badge non-active"></div></a>
-	<a href="#/demos" id="nav-demos" class="fontawesome-film non-active"></a>
-	<a href="#/settings" id="nav-settings" class="fontawesome-cog non-active"></a>
-	<a href="#/info" id="nav-info" class="fontawesome-info-sign non-active"></a>
+	<a href="#/servers" id="nav-servers" class="eicon-target non-active"></a>
+	<a href="#/streams" id="nav-streams" class="eicon-flash non-active"><div class="badge non-active"></div></a>
+	<a href="#/demos" id="nav-demos" class="eicon-video non-active"></a>
+	<a href="#/settings" id="nav-settings" class="eicon-cog non-active"></a>
+	<a href="#/info" id="nav-info" class="eicon-info non-active"></a>
 </div>
 <div class="content tse-scrollable wrapper">
 	<div id="servers" class="non-active"></div>
@@ -45,7 +45,7 @@
 
 	<div id="info" class="non-active">
 		<div class="container">
-			QTV Now 1.4.5 made by delete.
+			QTV Now 1.4.7 made by delete.
 
 			<p><h4>Contact</h4><br/>
 			You can reach me in #fnu on Quakenet or by <a href="mailto:manellermus@gmail.com?subject=QTV Now">email</a>.</p>
@@ -54,6 +54,14 @@
 			Atrophy for supplying the api and Sassa for the idea. ^^
 
 			<p><h4>Changelog</h4></p>
+			<p>
+				<strong>1.4.7 - 5 May 14</strong>
+				<li>Fix for the occasional faulty scrollbar.</li>
+			</p>
+			<p>
+				<strong>1.4.6 - 9 Feb 14</strong>
+				<li>Old icon font is back.</li>
+			</p>
 			<p>
 				<strong>1.4.5 - 1 Feb 14</strong>
 				<li>Had to change icon font because the last one was not working correctly in the latest chrome and windows8</li>
@@ -100,8 +108,8 @@
 <p>Players: <span class="players"></span></p>
 <p>Map: <span class="map"></span></p>
 <p>Status: <span class="status"></span></p>
-<a href="" class="fontawesome-eye-open watch"></a>
-<a href="" class="fontawesome-play play"></a>
+<a href="" class="eicon-eye watch"></a>
+<a href="" class="eicon-play play"></a>
 </div>
 </div>
 <div class="demo-template">
@@ -111,8 +119,8 @@
 <p><span class="who"></span></p>
 <p>Map: <span class="map"></span></p>
 <p>Date: <span class="date"></span></p>
-<a href="" class="fontawesome-eye-open watch"></a>
-<a href="" class="fontawesome-cloud-download download"></a>
+<a href="" class="eicon-eye watch"></a>
+<a href="" class="eicon-download download"></a>
 </div>
 </div>
 <a class="stream-template">
@@ -148,8 +156,8 @@
 </div>
 <script src="js/jquery-2.0.3.min.js"></script>
 <script src="js/jquery.storage.js"></script>
-<script src="js/jquery.trackpad-scroll-emulator.min.js"></script>
 <script src="js/sammy-latest.min.js"></script>
+<script src="js/jquery.pinger-0.2.js"></script>
 <script src="js/popup.js"></script>
 <script src="js/options.js"></script>
 </body>

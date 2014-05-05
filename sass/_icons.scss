@@ -1,12 +1,60 @@
-/* @import url(http://weloveiconfonts.com/api/?family=entypo);
-
-[class*="entypo-"]:before {
-   font-family: 'entypo', sans-serif;
- }
-*/
-@import url(http://weloveiconfonts.com/api/?family=fontawesome);
-
-/* fontawesome */
-[class*="fontawesome-"]:before {
-  font-family: 'FontAwesome', sans-serif;
+@font-face {
+  font-family: 'entypo';
+  src: url('../font/entypo.eot?74298659');
+  src: url('../font/entypo.eot?74298659#iefix') format('embedded-opentype'),
+       url('../font/entypo.woff?74298659') format('woff'),
+       url('../font/entypo.ttf?74298659') format('truetype'),
+       url('../font/entypo.svg?74298659#entypo') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'entypo';
+    src: url('../font/entypo.svg?74298659#entypo') format('svg');
+  }
+}
+*/
+ 
+ [class^="eicon-"]:before, [class*=" eicon-"]:before {
+  font-family: "entypo";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  // width: 1em;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+     
+  /* fix buttons height, for twitter bootstrap */
+  // line-height: 1em;
+ 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+ 
+.eicon-video:before { content: '\e800'; } /* '' */
+.eicon-info:before { content: '\e802'; } /* '' */
+.eicon-info-circled:before { content: '\e803'; } /* '' */
+.eicon-eye:before { content: '\e801'; } /* '' */
+.eicon-download:before { content: '\e804'; } /* '' */
+.eicon-cog:before { content: '\e806'; } /* '' */
+.eicon-arrows-ccw:before { content: '\e807'; } /* '' */
+.eicon-play:before { content: '\e808'; } /* '' */
+.eicon-target:before { content: '\e809'; } /* '' */
+.eicon-flash:before { content: '\e805'; } /* '' */
