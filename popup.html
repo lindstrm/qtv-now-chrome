@@ -38,6 +38,7 @@
 			<p><label><input type="checkbox" data-key="copyLink"> Copy to clipboard instead of launching.</label></p>
 			<h4>List</h4>
 			<p><label><input type="checkbox" data-key="hide1p"> Hide servers with one player.</label></p>
+			<p><label><input type="checkbox" data-key="showPing"> Display average ping. (Experimental)</label></p>
 			<h4>Notices</h4>
 			<input type="text" data-key="obsNotice" size="1"> Number of observers before alerting. (0 = off)
 		</div>
@@ -45,7 +46,7 @@
 
 	<div id="info" class="non-active">
 		<div class="container">
-			QTV Now 1.4.7 made by delete.
+			QTV Now 1.5.0 made by delete.
 
 			<p><h4>Contact</h4><br/>
 			You can reach me in #fnu on Quakenet or by <a href="mailto:manellermus@gmail.com?subject=QTV Now">email</a>.</p>
@@ -54,6 +55,10 @@
 			Atrophy for supplying the api and Sassa for the idea. ^^
 
 			<p><h4>Changelog</h4></p>
+			<p>
+				<strong>1.5.0 - 4 June 14</strong>
+				<li>Added an experimental ping meter. Note; this feature might not be totally accurate and it might not work on all servers. It can be turned off in the options.</li>
+			</p>
 			<p>
 				<strong>1.4.7 - 5 May 14</strong>
 				<li>Fix for the occasional faulty scrollbar.</li>
@@ -157,7 +162,6 @@
 <script src="js/jquery-2.0.3.min.js"></script>
 <script src="js/jquery.storage.js"></script>
 <script src="js/sammy-latest.min.js"></script>
-<script src="js/jquery.pinger-0.2.js"></script>
 <script src="js/popup.js"></script>
 <script src="js/options.js"></script>
 </body>

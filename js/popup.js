@@ -67,7 +67,7 @@ Popup = {
 					teams = (server.Teams[0].Name||'???') + ' vs '+ (server.Teams[1].Name||'???')
 				}
 
-				watch = $.localStorage('nquake') == true ? 'http://nquake.com/online/qtv/'+qtv.num+'@'+qtv.host:'http://dafaq.se/qtv.php?q='+server.Link;
+				watch = $.localStorage('nquake') == true ? 'http://nquake.com/online/qtv/'+qtv.num+'@'+qtv.host:'http://fvck.se/qtv.php?q='+server.Link;
 				play  = $.localStorage('nquake') == true ? 'http://nquake.com/online/join/'+adress:'qw://'+adress;
 
 				template = Popup.settings.template.clone().removeClass('template').addClass('server');
@@ -198,6 +198,61 @@ Popup = {
 		{
 			$('.badge').html('').addClass('non-active');
 		}
+
+		$('span.host').each(function() {
+			var $this = jQuery(this);
+			
+			if($.localStorage('showPing') == '0')
+				return false;
+
+			$this.data('address', jQuery(this).text());
+			$this.data('ping', []);
+			
+			$this.data('completed', function( start ) {
+				var end = new Date().getTime();
+				var diff = end - start;
+				
+				if ( diff >= 0 && diff < 1000 ) {
+					$this.data('ping').push( (diff-16) );
+					
+					var total_ping = 0;
+					var ping_count = 0;
+					var avg_ping = false
+					for (i=0; i < $this.data('ping').length; i++) {
+						total_ping += $this.data('ping')[i];
+						ping_count += 1;
+					}
+					if ( ping_count > 0 && total_ping > 0 ) avg_ping = Math.round(total_ping / ping_count);
+					
+					$this.text( $this.data('address') + " (" + avg_ping + "ms)" );
+				}
+				
+				if ( $this.data('ping').length < 6 ) {
+					setTimeout(function() {
+						ping( $this.data('address'), $this.data('completed') );
+					}, 500);
+				}else{
+					var total_ping = 0;
+					var ping_count = 0;
+					var avg_ping = false
+					for (i=0; i < $this.data('ping').length; i++) {
+						total_ping += $this.data('ping')[i];
+						ping_count += 1;
+					}
+					if ( ping_count > 0 && total_ping > 0 ) avg_ping = Math.round(total_ping / ping_count);
+					
+					$this.html( $this.data('address') );
+					
+					$this.append( 
+						jQuery("<span></span>")
+						.html(" (" + avg_ping + "ms)")
+					);
+				}
+			});
+			
+			$this.data('completed')();
+		});
+		
 		$('#streams').css({height:streams.length*56});
 	},
 
@@ -236,7 +291,7 @@ Popup = {
 
 		$('<img/>').attr({src:'levelshots/'+demo.map+'.jpg',height:53,width:69}).appendTo(template.find('.levelshot'));
 
-		watch    = "http://dafaq.se/qtv.php?q="+demo.qtv.adress+"/watch.qtv?demo="+demo.filename;
+		watch    = "http://fvck.se/qtv.php?q="+demo.qtv.adress+"/watch.qtv?demo="+demo.filename;
 		download = demo.qtv.adress+"/dl/demos/"+demo.filename;
 
 		template.find('.watch').attr({href:watch}).click(function() {
@@ -336,7 +391,7 @@ $(document).ready(function() {
 					$('#demo-search').val('');
 					$('.demo-list').html('');
 
-					$.get('http://qtvapi.dafaq.se/demos',function(data) {
+					$.get('http://qtvapi.fvck.se/demos',function(data) {
 						$.each(data, function(i, demo)
 						{
 							template = Popup.demoTemplate(demo);
@@ -438,39 +493,16 @@ Date.replaceChars = {
     U: function() { return this.getTime() / 1000; }
 };
 
-/* 
-Ping 
-*/
-$.extend($, {
-	Ping: function Ping(url, timeout) {
-		timeout = timeout || 1500;
-		var timer = null;
- 
-		return $.Deferred(function deferred(defer) {
- 
-			var img = new Image();
-			img.onload = function () { success("onload"); };
-			img.onerror = function () { success("onerror"); };  // onerror is also success, because this means the domain/ip is found, only the image not;
- 
-			var start = new Date();
-			img.src = url += ("?cache=" + +start);
-			timer = window.setTimeout(function timer() { fail(); }, timeout);
- 
-			function cleanup() {
-				window.clearTimeout(timer);
-				timer = img = null;
-			}
- 
-			function success(on) {
-				cleanup();
-				defer.resolve(true, url, new Date() - start, on);
-			}
- 
-			function fail() {
-				cleanup();
-				defer.reject(false, url, new Date() - start, "timeout");
-			}
- 
-		}).promise();
-	}
-});
+function ping( ip, callback ) {
+	var start = new Date().getTime();
+	var timeout = 1500;
+	
+	if ( ip.match(/\:[0-9]{3,5}/) == null ) ip = ip + ":25565";
+
+	var img = new Image();
+
+	img.onload = function() { callback( start ); };
+	img.onerror = function() { callback( start ); };
+
+	img.src = "http://" + ip + "/" + Math.round(Math.random() * 1000);
+}

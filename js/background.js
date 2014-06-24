@@ -27,8 +27,12 @@ Background = {
             $.localStorage('copyLink', false);
         }
 
-         if($.localStorage('obsNotice') == undefined) {
+        if($.localStorage('obsNotice') == undefined) {
             $.localStorage('obsNotice', '0');
+        }
+
+        if($.localStorage('showPing') == undefined) {
+            $.localStorage('showPing', '1');
         }
 
         this.grab();
