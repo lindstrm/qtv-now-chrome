@@ -62,7 +62,7 @@ Background = {
             url: s.list,
             success: function(data){
                 s.servers = new Array();
-                Background.parse(data);
+                Background.parse(data.Servers);
                 Request.send({action:'refreshView'});
             }
         })
