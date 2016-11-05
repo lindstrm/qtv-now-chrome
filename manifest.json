@@ -19,7 +19,7 @@
 		"default_popup": "popup.html"
 	},
 	"permissions": [
-		"*://qtv.atrophied.co.uk/*",
+		"*://metaqtv.duelmania.net/*",
 		"*://*.twitch.tv/*",
 		"*://static-cdn.jtvnw.net/*",
 		"*://qtvapi.fvck.se/*",
