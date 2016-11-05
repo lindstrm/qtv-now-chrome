@@ -1,28 +1,27 @@
 {
-	"manifest_version": 2,
-	"name": "QTV Now",
-	"version": "1.5.3",
-	"description": "View active QTV servers.",
-	"background": { 
-		"scripts": ["js/jquery-2.0.3.min.js", "js/jquery.storage.js", "js/background.js"],
-		"persistent": true
-	},
-	"icons": {
-		"48": "images/logo.png",
-		"128": "images/logo.png"
-	},
-	"browser_action": {
-		"default_icon": {
-			"19": "images/icon19.png"
-		},
-		"default_title": "QTV Now",
-		"default_popup": "popup.html"
-	},
-	"permissions": [
-		"*://metaqtv.duelmania.net/*",
-		"*://*.twitch.tv/*",
-		"*://static-cdn.jtvnw.net/*",
-		"*://qtvapi.fvck.se/*",
-		"notifications"
-	]
+  "manifest_version": 2,
+  "name": "QTV Now",
+  "version": "2.0.0",
+  "description": "View active QTV servers.",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "icons": {
+    "48": "static/images/logo.png",
+    "128": "static/images/logo.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "static/images/icon19.png"
+    },
+    "default_title": "QTV Now",
+    "default_popup": "index.html"
+  },
+  "background": {
+    "scripts": ["static/js/background.js"]
+  },
+  "permissions": [
+    "*://metaqtv.duelmania.net/*",
+    "*://*.twitch.tv/*",
+    "*://static-cdn.jtvnw.net/*",
+    "notifications"
+  ]
 }
