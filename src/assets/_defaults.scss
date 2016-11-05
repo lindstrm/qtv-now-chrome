@@ -1,0 +1,15 @@
+@import "variables";
+
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+a {
+  color: lighten($backgroundColor, 30%);
+}
+
+input[type="checkbox"] {
+  margin: 0;
+}
