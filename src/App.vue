@@ -33,8 +33,11 @@ export default {
   },
 
   mounted() {
-    this.startServerTimer(true);
-    this.startStreamTimer(true);
+    setTimeout(() => {
+      this.startServerTimer(true);
+      this.startStreamTimer(true);
+    }, 500);
+    
     this.$router.push('/servers');
     
     $('body').on('click', 'a.link', event => {
@@ -115,7 +118,7 @@ body, html {
   padding: 5px;
   color: lighten($menuBGColor, 30%);
   font-size: 12px;
-  
+
   .higlight {
     color: lighten($menuBGColor, 60%);
   }
