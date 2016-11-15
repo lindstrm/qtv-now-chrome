@@ -13,7 +13,12 @@
     	D0PESK1LLZ for supplying the api.
 
     	<h4>Changelog</h4>
-      <strong>2.0 - 5 Nov 16</strong>
+      <strong>2.0.1 - 15 Nov 16</strong>
+      <ul>
+        <li>Fix observer notification bug.</li>
+      </ul>
+
+      <strong>2.0.0 - 5 Nov 16</strong>
       <ul>
         <li>Complete rewrite of the entire extension.</li>
       </ul>
@@ -86,20 +91,9 @@
 </template>
 
 <script>
-var $ = require('jquery');
-require("jquery-mousewheel")($);
-require('malihu-custom-scrollbar-plugin')($);
+import scroll from './mixins/scroll';
 export default {
-  mounted() {
-    $('.scroll').mCustomScrollbar({
-          scrollInertia: 0,
-          autoHideScrollbar: true,
-          theme: 'dark-thick',
-          mouseWheel: {
-              scrollAmount: 53
-          }
-      });
-  }
+  mixins: [scroll],
 }
 </script>
 
