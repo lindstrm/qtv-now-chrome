@@ -14,28 +14,13 @@
 
 <script>
 import Stream from './components/Stream';
-var $ = require('jquery');
-require("jquery-mousewheel")($);
-require('malihu-custom-scrollbar-plugin')($);
+import scroll from './mixins/scroll';
 export default {
+  mixins: [scroll],
   components: { Stream },
   data() {
     return { }
   },
-  mounted() {
-    $('.scroll').mCustomScrollbar({
-          scrollInertia: 0,
-          autoHideScrollbar: true,
-          theme: 'dark-thick',
-          mouseWheel: {
-              scrollAmount: 53
-          }
-      });
-  },
-
-  methods: {
-
-  }
 }
 </script>
 

@@ -4,17 +4,18 @@ ls.get = key => {
   if(localStorage[key]) {
     return JSON.parse(localStorage[key]);
   }
-  return false;
+  return 0;
 }
 ls.save = (key, value) => {
   localStorage[key] = JSON.stringify(value);
   return value;
 }
+
 const settings = ls.get('settings') || { hide1p: false, copyToClipboard: false, observerThreshold: 0 };
 const openInterval = 10000;
 const closedInterval = 60000;
-
 const qtvapi = 'http://metaqtv.duelmania.net/api/v2/servers';
+
 chrome.browserAction.setBadgeBackgroundColor({ color: '#4c473a'})
 
 const grabServers = () => {
@@ -32,6 +33,7 @@ const grabServers = () => {
       });
 
       setBadgeText(activeServers);
+
       checkObservers(activeServers);
 
       ls.save('servers', activeServers);
@@ -43,22 +45,37 @@ const checkObservers = servers => {
     const noticedServers = ls.get('noticedServers') || [];
     const host = `${server.hostname}:${server.port}`;
 
-    if(server.observercount > settings.observerThreshold && noticedServers.indexOf(host) === -1) {
-      console.log(server);
+    if(_shouldNotify(noticedServers, host, server)) {
 
-      chrome.notifications.create(`notification.${server.qtvstream}`, notificationOptions(server));
-      chrome.notifications.onButtonClicked.addListener((notificationId, buttonIndex) => {
-        chrome.tabs.create( { url: server.watchlink } )
-      })
+      _createNotification(server);
 
       noticedServers.push(host)
 
       ls.save('noticedServers', noticedServers);
     }
-    else if(server.observercount < settings.observerThreshold && noticedServers.indexOf(host) > -1) {
-      ls.save('noticedServers', noticedServers.splice(noticedServers.indexOf(host), 1));
+    else if(_shouldRemoveFromNotificationList(noticedServers, host, server)) {
+      noticedServers.splice(noticedServers.indexOf(host), 1)
+      ls.save('noticedServers', noticedServers);
     }
-  })
+  });
+
+  function _createNotification(server) {
+    chrome.notifications.create(`notification.${server.qtvstream}`, notificationOptions(server));
+    chrome.notifications.onButtonClicked.addListener((notificationId, buttonIndex) => {
+      chrome.tabs.create( { url: server.watchlink } )
+    });
+  }
+
+  function _shouldNotify(noticedServers, host, server) {
+    return Number(ls.get('settings').observerThreshold) > 0
+            && server.observercount >= Number(ls.get('settings').observerThreshold)
+            && noticedServers.indexOf(host) === -1
+  }
+
+  function _shouldRemoveFromNotificationList(noticedServers, host, server) {
+    return server.observercount < Number(ls.get('settings').observerThreshold)
+            && noticedServers.indexOf(host) > -1;
+  }
 }
 
 const grabServersTimer = () => {
@@ -92,7 +109,7 @@ const setBadgeText = (servers) => {
   if(ls.get('settings').hide1p === true) {
     servers = servers.filter(server => server.players.length > 1);
   }
-  
+
   if(servers.length > 0) {
     chrome.browserAction.setBadgeText({ text: String(servers.length) })
   } else {

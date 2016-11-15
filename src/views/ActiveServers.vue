@@ -8,11 +8,10 @@
 
 <script>
 import Server from './components/Server.vue';
-var $ = require('jquery');
-require("jquery-mousewheel")($);
-require('malihu-custom-scrollbar-plugin')($);
+import scroll from './mixins/scroll';
 export default {
   name: 'ActiveServers',
+  mixins: [scroll],
   components: { Server },
   methods: {
     hidden(server) {
@@ -32,17 +31,6 @@ export default {
       })
     },
   },
-
-  mounted() {
-    $('.scroll').mCustomScrollbar({
-          scrollInertia: 0,
-          autoHideScrollbar: true,
-          theme: 'dark-thick',
-          mouseWheel: {
-              scrollAmount: 53
-          }
-      });
-  }
 }
 </script>
 
